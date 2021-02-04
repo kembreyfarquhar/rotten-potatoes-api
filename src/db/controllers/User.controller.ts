@@ -5,12 +5,12 @@ import { hashSync, compareSync } from 'bcryptjs';
 import { genToken } from '../../utils/genToken';
 import { sendError } from '../../utils/sendError';
 import { validate } from 'class-validator';
-import { STATUS_CODES } from '../../enums/STATUS_CODES';
+import { STATUS_CODES } from '../../enums/StatusCodes';
 
 export class UserController {
   private userRepository = getRepository(User);
 
-  async all(req: Request, res: Response) {
+  async all(_: Request, res: Response) {
     try {
       const users = await this.userRepository.find();
 

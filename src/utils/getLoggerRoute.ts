@@ -1,4 +1,4 @@
-import { LOGGER_ROUTES, LOGGER_ROUTE_VALUES } from '../enums/LOGGER_ROUTE_TYPES';
+import { LOGGER_ROUTES, LOGGER_ROUTE_VALUES } from '../enums/loggerRouteTypes';
 
 const getLoggerRoute = (path: string) => {
   const pathArr = path.split('/');

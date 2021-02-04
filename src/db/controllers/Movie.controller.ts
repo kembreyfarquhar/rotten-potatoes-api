@@ -3,12 +3,12 @@ import { Request, Response } from 'express';
 import { Movie } from '../models/Movie.model';
 import { sendError } from '../../utils/sendError';
 import { validate } from 'class-validator';
-import { STATUS_CODES } from '../../enums/STATUS_CODES';
+import { STATUS_CODES } from '../../enums/StatusCodes';
 
 export class MovieController {
   private movieRepository = getRepository(Movie);
 
-  async all(req: Request, res: Response) {
+  async all(_: Request, res: Response) {
     try {
       const movies = await this.movieRepository.find();
       const STATUS = STATUS_CODES.OK;

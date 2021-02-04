@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
 import { Movie } from '../models/Movie.model';
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import { sendError } from '../../utils/sendError';
-import { STATUS_CODES } from '../../enums/STATUS_CODES';
+import { STATUS_CODES } from '../../enums/StatusCodes';
 
-export const isMovie = async (req: Request, res: Response, next: NextFunction) => {
+export const isMovie: RequestHandler = async (req, res, next) => {
   try {
     if (Object.keys(req.query).length !== 0) {
       const movies = await getRepository(Movie)
@@ -35,7 +35,7 @@ export const isMovie = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
-export const movieValidator = (req: Request, res: Response, next: NextFunction) => {
+export const movieValidator: RequestHandler = (req, res, next) => {
   const { title, plot_summary, duration } = req.body;
   const keys = Object.keys(req.body);
 
@@ -52,7 +52,7 @@ export const movieValidator = (req: Request, res: Response, next: NextFunction) 
   } else next();
 };
 
-export const movieUpdateValidator = (req: Request, res: Response, next: NextFunction) => {
+export const movieUpdateValidator: RequestHandler = (req, res, next) => {
   const { title, plot_summary, duration } = req.body;
 
   const keys = Object.keys(req.body);

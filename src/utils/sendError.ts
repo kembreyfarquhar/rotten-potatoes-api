@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { ValidationError } from 'class-validator';
-import { STATUS_CODES } from '../enums/STATUS_CODES';
+import { STATUS_CODES } from '../enums/StatusCodes';
 
 const sendError = {
   constraints(errors: ValidationError[], res: Response) {

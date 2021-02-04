@@ -1,6 +1,6 @@
-import { LOG_TYPE_KEYS } from '../../enums/LOG_TYPES';
-import { STATUS_CODES_VALUES } from '../../enums/STATUS_CODES';
-import { HTTP_METHODS_VALUES } from '../../enums/HTTP_METHODS';
+import { LOG_TYPE_KEYS } from '../../enums/logTypes';
+import { STATUS_CODES_VALUES } from '../../enums/StatusCodes';
+import { HTTP_METHODS_VALUES } from '../../enums/httpMethods';
 
 export type FormatParams = {
   logType: LOG_TYPE_KEYS;

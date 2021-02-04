@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm';
 import { SnakeNamingStrategy } from '../snakeNamingStrategy';
-import { QueryLogger } from '../services/queryLogger';
+// import { QueryLogger } from '../services/queryLogger';
 
 export let connect = async () => {
   const connection = await createConnection({

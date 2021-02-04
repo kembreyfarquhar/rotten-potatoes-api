@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
 import { User } from '../models/User.model';
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import { sendError } from '../../utils/sendError';
-import { STATUS_CODES } from '../../enums/STATUS_CODES';
+import { STATUS_CODES } from '../../enums/StatusCodes';
 
-export const isUser = async (req: Request, res: Response, next: NextFunction) => {
+export const isUser: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
   const { username } = req.body;
   const query = id ? `users.id = :id` : `users.username = :username`;
@@ -25,10 +25,11 @@ export const isUser = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
-export const userValidator = (req: Request, res: Response, next: NextFunction) => {
+export const userValidator: RequestHandler = (req, res, next) => {
   const { username, password } = req.body;
   const keys = Object.keys(req.body);
 
+  console.log(req.body);
   if (!keys.length) {
     return res.status(STATUS_CODES.BAD_REQUEST).json({ msg: 'must contain a json body' });
   } else if (!username || !password) {
@@ -40,7 +41,7 @@ export const userValidator = (req: Request, res: Response, next: NextFunction) =
   } else next();
 };
 
-export const userUpdateValidator = (req: Request, res: Response, next: NextFunction) => {
+export const userUpdateValidator: RequestHandler = (req, res, next) => {
   const { username, password } = req.body;
   const keys = Object.keys(req.body);
 
@@ -59,7 +60,7 @@ export const userUpdateValidator = (req: Request, res: Response, next: NextFunct
   } else next();
 };
 
-export const userTokenValidator = (req: Request, res: Response, next: NextFunction) => {
+export const userTokenValidator: RequestHandler = (req, res, next) => {
   const token = req.token;
 
   if (req.params.id == token.subject.toString()) {

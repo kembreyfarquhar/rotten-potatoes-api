@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
-import { LOGGER_ROUTES } from '../../enums/LOGGER_ROUTE_TYPES';
-import { HTTP_METHODS_VALUES } from '../../enums/HTTP_METHODS';
-import { STATUS_CODES } from '../../enums/STATUS_CODES';
+import { LOGGER_ROUTES } from '../../enums/loggerRouteTypes';
+import { HTTP_METHODS_VALUES } from '../../enums/httpMethods';
+import { STATUS_CODES } from '../../enums/StatusCodes';
 import { LoggerService } from '../../services/loggerService';
 import { getKeyByValue } from '../../utils/getObjectKey';
 const secret = process.env.JWT_SECRET || 'secret';
@@ -14,7 +14,7 @@ export type JWTToken = {
   exp: number;
 };
 
-const requireToken = (req: Request, res: Response, next: NextFunction) => {
+const requireToken: RequestHandler = (req, res, next) => {
   const token = req.headers.authorization;
 
   const logger = new LoggerService(
@@ -29,7 +29,7 @@ const requireToken = (req: Request, res: Response, next: NextFunction) => {
     jsonwebtoken.verify(token, secret, (err, decodedToken) => {
       if (err) {
         logger.statusCode = STATUS_CODES.UNAUTHORIZED;
-        logger.error(`${getKeyByValue(STATUS_CODES, STATUS_CODES.UNAUTHORIZED)} - TOKEN INVALID`);
+        logger.warn(`${getKeyByValue(STATUS_CODES, STATUS_CODES.UNAUTHORIZED)} - TOKEN INVALID`);
         res.status(STATUS_CODES.UNAUTHORIZED).json({ message: 'Invalid token' });
       } else {
         logger.statusCode = null;
@@ -40,7 +40,7 @@ const requireToken = (req: Request, res: Response, next: NextFunction) => {
     });
   } else {
     logger.statusCode = STATUS_CODES.UNAUTHORIZED;
-    logger.error(`${getKeyByValue(STATUS_CODES, STATUS_CODES.UNAUTHORIZED)} - NO TOKEN PROVIDED`);
+    logger.warn(`${getKeyByValue(STATUS_CODES, STATUS_CODES.UNAUTHORIZED)} - NO TOKEN PROVIDED`);
     res.status(STATUS_CODES.UNAUTHORIZED).json({ message: 'Please provide a token' });
   }
 };

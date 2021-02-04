@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
-import { HTTP_METHODS_VALUES } from '../../enums/HTTP_METHODS';
+import { RequestHandler } from 'express';
+import { HTTP_METHODS_VALUES } from '../../enums/httpMethods';
 import { LoggerService } from '../../services/loggerService';
 import { getLoggerRoute } from '../../utils/getLoggerRoute';
 
-const beginLoggingMW = (req: Request, res: Response, next: NextFunction) => {
+const beginLoggingMW: RequestHandler = (req, _, next) => {
   const ROUTE = getLoggerRoute(req.originalUrl);
 
   const logger = new LoggerService(
@@ -14,7 +14,11 @@ const beginLoggingMW = (req: Request, res: Response, next: NextFunction) => {
     req.headers['user-agent']
   );
 
-  logger.info(`BEGINNING ${req.method} - ${ROUTE}`, req.body);
+  const body = { ...req.body };
+  if (body.password) delete body.password;
+  const params = req.params;
+
+  logger.info(`BEGINNING ${req.method} - ${ROUTE}`, { body, params });
   next();
 };
 

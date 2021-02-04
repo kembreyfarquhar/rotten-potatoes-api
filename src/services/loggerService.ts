@@ -1,9 +1,9 @@
 import { Logger, createLogger, format, transports } from 'winston';
-import colors from 'colors';
-import { LOG_COLORS } from '../enums/LOG_COLORS';
-import { HTTP_METHODS_VALUES } from '../enums/HTTP_METHODS';
-import { STATUS_CODES_VALUES } from '../enums/STATUS_CODES';
-import { LOGGER_ROUTE_VALUES } from '../enums/LOGGER_ROUTE_TYPES';
+// import colors from 'colors';
+import { LOG_COLORS } from '../enums/logColors';
+import { HTTP_METHODS_VALUES } from '../enums/httpMethods';
+import { STATUS_CODES_VALUES } from '../enums/StatusCodes';
+import { LOGGER_ROUTE_VALUES } from '../enums/loggerRouteTypes';
 import { FormatParams } from '../types/logger';
 
 const { combine, printf } = format;
@@ -45,48 +45,52 @@ function logFormat(params: FormatParams) {
   else if (infoLevel === 'DEBUG') infoColor = LOG_COLORS.DEBUG;
   else if (infoLevel === 'WARN') infoColor = LOG_COLORS.WARN;
   else if (infoLevel === 'ERROR') infoColor = LOG_COLORS.ERROR;
-  else infoColor = colors.black;
+  else infoColor = LOG_COLORS.BLACK;
 
   let statusColor;
   if (statusCode && statusCode < 300) statusColor = LOG_COLORS.SUCCESS;
   else if (statusCode && statusCode < 500 && statusCode > 399) statusColor = LOG_COLORS.WARN;
   else if (statusCode && statusCode > 499) statusColor = LOG_COLORS.ERROR;
-  else statusColor = colors.black;
+  else statusColor = LOG_COLORS.BLACK;
 
   const dateMsg =
     logType === 'console' ? LOG_COLORS.DATE(`[${dateFormat()}]`) : `[${dateFormat()}]`;
 
   const levelMsg = logType === 'console' ? infoColor(`${infoLevel}`) : `${infoLevel}`;
 
-  const agentMsg = userAgent ? `${userAgent}` : '';
+  const agentMsg = userAgent ? `${userAgent}` : undefined;
 
-  const hostMsg = host ? `${host}` : '';
+  const hostMsg = host ? `${host}` : undefined;
 
   const methodMsg =
-    method && logType === 'console' ? LOG_COLORS.METHOD(`${method}`) : method ? `${method}` : '';
+    method && logType === 'console'
+      ? LOG_COLORS.METHOD(`${method.toUpperCase()}`)
+      : method
+      ? `${method.toUpperCase()}`
+      : undefined;
 
   const pathMsg =
     path && logType === 'console'
       ? LOG_COLORS.ROUTE(`endpoint: "${path}"`)
       : path
       ? `endpoint: "${path}"`
-      : '';
+      : undefined;
 
   const statusMsg =
     statusCode && logType === 'console'
       ? statusColor(`status: ${statusCode}`)
       : statusCode
       ? `status: ${statusCode}`
-      : '';
+      : undefined;
 
   const messageMsg =
     logType === 'console' ? LOG_COLORS.MESSAGE(`${info.message}`) : `${info.message}`;
 
-  const objMsg = info.obj && Object.keys(info.obj).length > 0 ? `data: ${obj}` : '';
+  const objMsg = info.obj && Object.keys(info.obj).length > 0 ? `\ndata: ${obj}` : undefined;
 
-  const dataMsg = log_data ? `log_data: ${formatObject(log_data)}` : '';
+  const dataMsg = log_data ? `\nlog_data: ${formatObject(log_data)}` : undefined;
 
-  const message = [
+  const messageArr = [
     dateMsg,
     levelMsg,
     agentMsg,
@@ -97,9 +101,13 @@ function logFormat(params: FormatParams) {
     messageMsg,
     objMsg,
     dataMsg,
-  ].join(' | ');
+  ];
 
-  return message;
+  const filteredMsgs = messageArr.filter(msg => typeof msg != 'undefined');
+
+  const message = filteredMsgs.join(' | ');
+
+  return `\n${message}\n`;
 }
 
 export class LoggerService {
@@ -189,6 +197,13 @@ export class LoggerService {
     if (!obj) this.logger.log('debug', message);
     else {
       this.logger.log('debug', message, { obj });
+    }
+  }
+
+  async warn(message: any, obj: any = null) {
+    if (!obj) this.logger.log('warn', message);
+    else {
+      this.logger.log('warn', message, { obj });
     }
   }
 

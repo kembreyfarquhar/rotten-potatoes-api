@@ -1,7 +1,7 @@
 import { UserController } from './controllers/User.controller';
 import { MovieController } from './controllers/Movie.controller';
 import { requireToken } from '../db/middleware/requireToken';
-import { HTTP_METHODS } from '../enums/HTTP_METHODS';
+import { HTTP_METHODS } from '../enums/httpMethods';
 import { beginLoggingMW } from '../db/middleware/beginLogging';
 import {
   userValidator,
@@ -10,9 +10,9 @@ import {
   userTokenValidator,
 } from '../db/middleware/users.middleware';
 import { movieValidator, movieUpdateValidator, isMovie } from '../db/middleware/movies.middleware';
-import { ROUTE_TYPE } from '../enums/ROUTE_TYPES';
+import { ServerRouteType } from '../enums/serverRouteType';
 
-export const Routes: ROUTE_TYPE[] = [
+export const Routes: ServerRouteType[] = [
   {
     method: HTTP_METHODS.GET,
     route: '/users/all',
