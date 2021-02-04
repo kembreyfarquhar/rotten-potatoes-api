@@ -1,65 +1,64 @@
-import { getRepository } from "typeorm";
-import { Request, Response } from "express";
-import { User } from "../models/User.model";
-import { hashSync, compareSync } from "bcryptjs";
-import {
-  userValidator,
-  userUpdateValidator,
-} from "../validators/User.validator";
-import { genToken } from "../../utils/genToken";
-import { sendError } from "../../utils/sendError";
-import { validate } from "class-validator";
+import { getRepository } from 'typeorm';
+import { Request, Response } from 'express';
+import { User } from '../models/User.model';
+import { hashSync, compareSync } from 'bcryptjs';
+import { genToken } from '../../utils/genToken';
+import { sendError } from '../../utils/sendError';
+import { validate } from 'class-validator';
+import { STATUS_CODES } from '../../enums/STATUS_CODES';
 
 export class UserController {
   private userRepository = getRepository(User);
 
-  async findUser(id: string, res: Response) {
-    try {
-      const user = await this.userRepository.findOne(id);
-      if (!user) res.status(404).json({ msg: `user with id:${id} not found` });
-      else return user;
-    } catch (err) {
-      sendError.server(err, res);
-    }
-  }
-
   async all(req: Request, res: Response) {
     try {
       const users = await this.userRepository.find();
-      users.forEach((user) => delete user.password);
-      return users;
+
+      users.forEach(user => delete user.password);
+
+      const STATUS = STATUS_CODES.OK;
+      res.status(STATUS).json(users);
+      return STATUS;
     } catch (err) {
-      sendError.server(err, res);
+      const STATUS = sendError.server(err, res);
+      return STATUS;
     }
   }
 
-  async byID(req: Request, res: Response) {
-    const user = await this.findUser(req.params.id, res);
-    if (user) {
-      delete user.password;
-      return user;
-    }
-    console.log("Here");
+  byID(req: Request, res: Response) {
+    const user = req.user;
+    delete user.password;
+    const STATUS = STATUS_CODES.OK;
+    res.status(STATUS).json(user || {});
+    return STATUS;
   }
 
   async register(req: Request, res: Response) {
     const user = new User();
     user.username = req.body.username;
     user.password = req.body.password;
+
     try {
-      await userValidator(req.body);
       const errors = await validate(user);
-      if (errors.length > 0) sendError.constraints(errors, res);
-      else {
+
+      if (errors.length > 0) {
+        sendError.constraints(errors, res);
+      } else {
         const hash = hashSync(user.password, 10);
         user.password = hash;
+
         const savedUser = await this.userRepository.save(user);
+
         delete savedUser.password;
+
         const token = genToken(savedUser);
-        return { token, ...savedUser };
+
+        res.status(STATUS_CODES.CREATED).json({ token, ...savedUser });
+        return STATUS_CODES.CREATED;
       }
     } catch (err) {
-      sendError.check400(err, res);
+      const STATUS = sendError.check400(err, res);
+      return STATUS;
     }
   }
 
@@ -67,45 +66,59 @@ export class UserController {
     const user = new User();
     user.username = req.body.username;
     user.password = req.body.password;
+
+    const foundUser = req.user;
+
     try {
-      await userValidator(req.body);
-      const foundUser = await this.userRepository.findOne({
-        where: { username: user.username },
-      });
-      if (foundUser && compareSync(user.password, foundUser.password)) {
+      if (compareSync(user.password, foundUser.password)) {
         delete foundUser.password;
+
         const token = genToken(foundUser);
-        return { token, ...foundUser };
+        const STATUS = STATUS_CODES.OK;
+
+        res.status(STATUS).json({ token, ...foundUser });
+        return STATUS;
       } else {
-        res.status(401).json({ error: "Invalid credentials" });
+        const STATUS = STATUS_CODES.UNAUTHORIZED;
+        res.status(STATUS).json({ error: 'Invalid credentials' });
+        return STATUS;
       }
     } catch (err) {
-      sendError.server(err, res);
+      const STATUS = sendError.server(err, res);
+      return STATUS;
     }
   }
 
   async update(req: Request, res: Response) {
     const changes = req.body;
+
     try {
-      await userUpdateValidator(changes);
-      const foundUser = await this.findUser(req.params.id, res);
-      if (foundUser) {
-        await this.userRepository.update(req.params.id, changes);
-        return { msg: "updated successfully" };
-      }
+      await this.userRepository.update(req.params.id, changes);
+
+      const STATUS = STATUS_CODES.CREATED;
+
+      res.status(STATUS).json({ msg: 'updated successfully' });
+      return STATUS;
     } catch (err) {
-      sendError.check400(err, res);
+      const STATUS = sendError.check400(err, res);
+      return STATUS;
     }
   }
 
   async remove(req: Request, res: Response) {
-    const id = req.params.id;
+    const foundUser = req.user;
+    const id = foundUser.id;
+
     try {
-      const foundUser = await this.findUser(id, res);
       await this.userRepository.remove(foundUser);
-      return { msg: `user with id:${id} successfully deleted` };
+
+      const STATUS = STATUS_CODES.CREATED;
+
+      res.status(STATUS).json({ msg: `user with id:${id} successfully deleted` });
+      return STATUS;
     } catch (err) {
-      sendError.server(err, res);
+      const STATUS = sendError.server(err, res);
+      return STATUS;
     }
   }
 }

@@ -1,8 +1,8 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
-import { UserType } from "../custom-types";
-import jsonwebtoken from "jsonwebtoken";
-const secret = process.env.JWT_SECRET || "secret";
+import { UserType } from '../types/models';
+import jsonwebtoken from 'jsonwebtoken';
+const secret = process.env.JWT_SECRET || 'secret';
 
 function genToken(user: Partial<UserType>) {
   const payload = {
@@ -11,7 +11,7 @@ function genToken(user: Partial<UserType>) {
   };
 
   const options = {
-    expiresIn: "1d",
+    expiresIn: '1d',
   };
 
   return jsonwebtoken.sign(payload, secret, options);

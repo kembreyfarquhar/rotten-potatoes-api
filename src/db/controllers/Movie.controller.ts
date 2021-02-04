@@ -1,39 +1,31 @@
-import { getRepository } from "typeorm";
-import { Request, Response } from "express";
-import { Movie } from "../models/Movie.model";
-import { movieValidator } from "../validators/Movie.validator";
-import { sendError } from "../../utils/sendError";
-import { requireToken } from "../middleware/requireToken";
-import { validate, isEmpty } from "class-validator";
+import { getRepository } from 'typeorm';
+import { Request, Response } from 'express';
+import { Movie } from '../models/Movie.model';
+import { sendError } from '../../utils/sendError';
+import { validate } from 'class-validator';
+import { STATUS_CODES } from '../../enums/STATUS_CODES';
 
 export class MovieController {
   private movieRepository = getRepository(Movie);
 
-  async findMovie(id: string, res: Response) {
-    try {
-      const movie = await this.movieRepository.findOne(id);
-      if (!movie)
-        res.status(404).json({ msg: `movie with id:${id} not found` });
-      else return movie;
-    } catch (err) {
-      sendError.server(err, res);
-    }
-  }
-
   async all(req: Request, res: Response) {
     try {
       const movies = await this.movieRepository.find();
-      return movies;
+      const STATUS = STATUS_CODES.OK;
+      res.status(STATUS).json(movies);
+      return STATUS;
     } catch (err) {
-      sendError.server(err, res);
+      const STATUS = sendError.server(err, res);
+      return STATUS;
     }
   }
 
-  async byID(req: Request, res: Response) {
-    const movie = await this.findMovie(req.params.id, res);
-    if (movie) {
-      return movie;
-    }
+  async findMovies(req: Request, res: Response) {
+    //@ts-ignore
+    const movie = req.movies;
+    const STATUS = STATUS_CODES.OK;
+    res.status(STATUS).json(movie);
+    return STATUS;
   }
 
   async save(req: Request, res: Response) {
@@ -47,36 +39,49 @@ export class MovieController {
     movie.created_by_user = user_id;
     movie.last_updated_user = user_id;
     try {
-      await movieValidator(req.body);
       const errors = await validate(movie);
       if (errors.length > 0) sendError.constraints(errors, res);
       else {
         const savedMovie = await this.movieRepository.save(movie);
-        return savedMovie;
+        const STATUS = STATUS_CODES.CREATED;
+        res.status(STATUS).json(savedMovie);
+        return STATUS;
       }
     } catch (err) {
-      sendError.check400(err, res);
+      const STATUS = sendError.check400(err, res);
+      return STATUS;
     }
   }
 
   async update(req: Request, res: Response) {
-    // cannot be empty
-    // cannot update id or any created_by, last_updated, created_at, ....
-    // if doesn't include title, plot, duration then error
-    // validate with class-validator
-    // const token = requireToken(req.headers.authorization, res)
-    // if (token !== undefined) {
-    //     const user_id = token.subject;
-    // }
-    // const date = new Date();
-    // const result = isDate(date);
-    const obj = {};
-    const result = isEmpty(obj);
-    console.log(result);
+    const incomingChanges = req.body;
+    const id = req.params.id;
+    //@ts-ignore
+    const last_updated_user = req.token.subject;
+    const last_updated = new Date();
+    const changes = { ...incomingChanges, last_updated, last_updated_user };
+    try {
+      await this.movieRepository.update(id, changes);
+      const STATUS = STATUS_CODES.CREATED;
+      res.status(STATUS).json({ msg: 'updated successfully' });
+      return STATUS;
+    } catch (err) {
+      const STATUS = sendError.check400(err, res);
+      return STATUS;
+    }
   }
 
   async remove(req: Request, res: Response) {
-    let movieToRemove = await this.movieRepository.findOne(req.params.id);
-    await this.movieRepository.remove(movieToRemove);
+    const foundMovie = req.movie;
+    const id = foundMovie.id;
+    try {
+      await this.movieRepository.remove(foundMovie);
+      const STATUS = STATUS_CODES.CREATED;
+      res.status(STATUS).json({ msg: `movie with id:${id} successfully deleted` });
+      return STATUS;
+    } catch (err) {
+      const STATUS = sendError.server(err, res);
+      return STATUS;
+    }
   }
 }

@@ -1,108 +1,93 @@
-import { UserController } from "./controllers/User.controller";
-import { MovieController } from "./controllers/Movie.controller";
-import { Request, Response, NextFunction } from "express";
-import { requireToken } from "../db/middleware/requireToken";
-import { logger } from "../utils/logger";
+import { UserController } from './controllers/User.controller';
+import { MovieController } from './controllers/Movie.controller';
+import { requireToken } from '../db/middleware/requireToken';
+import { HTTP_METHODS } from '../enums/HTTP_METHODS';
+import { beginLoggingMW } from '../db/middleware/beginLogging';
+import {
+  userValidator,
+  userUpdateValidator,
+  isUser,
+  userTokenValidator,
+} from '../db/middleware/users.middleware';
+import { movieValidator, movieUpdateValidator, isMovie } from '../db/middleware/movies.middleware';
+import { ROUTE_TYPE } from '../enums/ROUTE_TYPES';
 
-//@ts-ignore
-type Route = {
-  method: string;
-  route: string;
-  controller: Function;
-  action: string;
-  middleware: any;
-};
-
-const defaultNoMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  logger.info(
-    `HTTP version: ${req.httpVersion} IP: ${req.ip} Original URL: ${
-      req.originalUrl
-    } Body: ${JSON.stringify(req.body)} Headers: ${JSON.stringify(req.headers)}`
-  );
-
-  next();
-};
-
-export const Routes: Route[] = [
+export const Routes: ROUTE_TYPE[] = [
   {
-    method: "get",
-    route: "/users",
+    method: HTTP_METHODS.GET,
+    route: '/users/all',
     controller: UserController,
-    action: "all",
-    middleware: [requireToken],
+    action: 'all',
+    middleware: [beginLoggingMW, requireToken],
   },
   {
-    method: "get",
-    route: "/users/:id",
+    method: HTTP_METHODS.GET,
+    route: '/users/:id',
     controller: UserController,
-    action: "byID",
-    middleware: [requireToken],
+    action: 'byID',
+    middleware: [beginLoggingMW, requireToken, isUser],
   },
   {
-    method: "post",
-    route: "/users/register",
+    method: HTTP_METHODS.POST,
+    route: '/users/register',
     controller: UserController,
-    action: "register",
-    middleware: [defaultNoMiddleware],
+    action: 'register',
+    middleware: [beginLoggingMW, userValidator],
   },
   {
-    method: "post",
-    route: "/users/login",
+    method: HTTP_METHODS.POST,
+    route: '/users/login',
     controller: UserController,
-    action: "login",
-    middleware: [defaultNoMiddleware],
+    action: 'login',
+    middleware: [beginLoggingMW, userValidator, isUser],
   },
   {
-    method: "put",
-    route: "/users/:id",
+    method: HTTP_METHODS.PUT,
+    route: '/users/:id',
     controller: UserController,
-    action: "update",
-    middleware: [requireToken],
+    action: 'update',
+    middleware: [beginLoggingMW, requireToken, userUpdateValidator, isUser, userTokenValidator],
   },
   {
-    method: "delete",
-    route: "/users/:id",
+    method: HTTP_METHODS.DELETE,
+    route: '/users/:id',
     controller: UserController,
-    action: "remove",
-    middleware: [requireToken],
+    action: 'remove',
+    middleware: [beginLoggingMW, requireToken, isUser, userTokenValidator],
   },
   {
-    method: "get",
-    route: "/movies",
+    method: HTTP_METHODS.GET,
+    route: '/movies/all',
     controller: MovieController,
-    action: "all",
-    middleware: [defaultNoMiddleware],
+    action: 'all',
+    middleware: [beginLoggingMW],
   },
   {
-    method: "get",
-    route: "/movies/:id",
+    method: HTTP_METHODS.GET,
+    route: '/movies/find',
     controller: MovieController,
-    action: "byID",
-    middleware: [defaultNoMiddleware],
+    action: 'findMovies',
+    middleware: [beginLoggingMW, isMovie],
   },
   {
-    method: "post",
-    route: "/movies",
+    method: HTTP_METHODS.POST,
+    route: '/movies',
     controller: MovieController,
-    action: "save",
-    middleware: [defaultNoMiddleware],
+    action: 'save',
+    middleware: [beginLoggingMW, requireToken, movieValidator],
   },
   {
-    method: "put",
-    route: "/movies/:id",
+    method: HTTP_METHODS.PUT,
+    route: '/movies/:id',
     controller: MovieController,
-    action: "update",
-    middleware: [requireToken],
+    action: 'update',
+    middleware: [beginLoggingMW, requireToken, isMovie, movieUpdateValidator],
   },
   {
-    method: "delete",
-    route: "/movies/:id",
+    method: HTTP_METHODS.DELETE,
+    route: '/movies/:id',
     controller: MovieController,
-    action: "remove",
-    middleware: [requireToken],
+    action: 'remove',
+    middleware: [beginLoggingMW, requireToken, isMovie],
   },
 ];

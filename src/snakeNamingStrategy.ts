@@ -1,20 +1,14 @@
-import { DefaultNamingStrategy, NamingStrategyInterface } from "typeorm";
-import { snakeCase } from "typeorm/util/StringUtils";
+import { DefaultNamingStrategy, NamingStrategyInterface } from 'typeorm';
+import { snakeCase } from 'typeorm/util/StringUtils';
 
-export class SnakeNamingStrategy
-  extends DefaultNamingStrategy
-  implements NamingStrategyInterface {
+export class SnakeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
   tableName(className: string, customName: string): string {
     return customName ? customName : snakeCase(className);
   }
 
-  columnName(
-    propertyName: string,
-    customName: string,
-    embeddedPrefixes: string[]
-  ): string {
+  columnName(propertyName: string, customName: string, embeddedPrefixes: string[]): string {
     return (
-      snakeCase(embeddedPrefixes.concat("").join("_")) +
+      snakeCase(embeddedPrefixes.concat('').join('_')) +
       (customName ? customName : snakeCase(propertyName))
     );
   }
@@ -24,7 +18,7 @@ export class SnakeNamingStrategy
   }
 
   joinColumnName(relationName: string, referencedColumnName: string): string {
-    return snakeCase(relationName + "_" + referencedColumnName);
+    return snakeCase(relationName + '_' + referencedColumnName);
   }
 
   joinTableName(
@@ -34,32 +28,22 @@ export class SnakeNamingStrategy
     secondPropertyName: string
   ): string {
     return snakeCase(
-      firstTableName +
-        "_" +
-        firstPropertyName.replace(/\./gi, "_") +
-        "_" +
-        secondTableName
+      firstTableName + '_' + firstPropertyName.replace(/\./gi, '_') + '_' + secondTableName
     );
   }
 
-  joinTableColumnName(
-    tableName: string,
-    propertyName: string,
-    columnName?: string
-  ): string {
-    return snakeCase(
-      tableName + "_" + (columnName ? columnName : propertyName)
-    );
+  joinTableColumnName(tableName: string, propertyName: string, columnName?: string): string {
+    return snakeCase(tableName + '_' + (columnName ? columnName : propertyName));
   }
 
   classTableInheritanceParentColumnName(
     parentTableName: any,
     parentTableIdPropertyName: any
   ): string {
-    return snakeCase(parentTableName + "_" + parentTableIdPropertyName);
+    return snakeCase(parentTableName + '_' + parentTableIdPropertyName);
   }
 
   eagerJoinRelationAlias(alias: string, propertyPath: string): string {
-    return alias + "__" + propertyPath.replace(".", "_");
+    return alias + '__' + propertyPath.replace('.', '_');
   }
 }

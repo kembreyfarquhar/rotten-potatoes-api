@@ -1,57 +1,52 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class CreateMovieTable1611549039739 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.createTable(
       new Table({
-        name: "movies",
+        name: 'movies',
         columns: [
           {
-            name: "id",
-            type: "integer",
+            name: 'id',
+            type: 'integer',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: "increment",
+            generationStrategy: 'increment',
           },
           {
-            name: "title",
-            type: "varchar",
+            name: 'title',
+            type: 'varchar',
             isNullable: false,
             isUnique: true,
           },
           {
-            name: "plot_summary",
-            type: "text",
+            name: 'plot_summary',
+            type: 'text',
             isNullable: false,
           },
           {
-            name: "duration",
-            type: "integer",
+            name: 'duration',
+            type: 'integer',
             isNullable: false,
           },
           {
-            name: "created_at",
-            type: "timestamp",
-            default: "now()",
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
           },
           {
-            name: "last_updated",
-            type: "timestamp",
-            default: "now()",
+            name: 'last_updated',
+            type: 'timestamp',
+            default: 'now()',
           },
           {
-            name: "created_by_user_id",
-            type: "integer",
+            name: 'created_by_user_id',
+            type: 'integer',
             isNullable: false,
           },
           {
-            name: "last_updated_user_id",
-            type: "integer",
+            name: 'last_updated_user_id',
+            type: 'integer',
             isNullable: false,
           },
         ],
@@ -60,27 +55,27 @@ export class CreateMovieTable1611549039739 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      "movies",
+      'movies',
       new TableForeignKey({
-        columnNames: ["created_by_user_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "users",
-        onDelete: "CASCADE",
+        columnNames: ['created_by_user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
       })
     );
 
     await queryRunner.createForeignKey(
-      "movies",
+      'movies',
       new TableForeignKey({
-        columnNames: ["last_updated_user_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "users",
-        onDelete: "CASCADE",
+        columnNames: ['last_updated_user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
-    return await queryRunner.dropTable("movies");
+    return await queryRunner.dropTable('movies');
   }
 }

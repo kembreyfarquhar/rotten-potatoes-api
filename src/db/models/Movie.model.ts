@@ -6,11 +6,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { IsString, Length, IsInt } from "class-validator";
-import { User } from "./User.model";
+} from 'typeorm';
+import { IsString, Length, IsInt } from 'class-validator';
+import { User } from './User.model';
 
-@Entity("movies")
+@Entity('movies')
 export class Movie extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -35,11 +35,11 @@ export class Movie extends BaseEntity {
   @UpdateDateColumn()
   last_updated: Date;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, user => user.id)
   @IsInt()
   created_by_user: number;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, user => user.id)
   @IsInt()
   last_updated_user: number;
 }

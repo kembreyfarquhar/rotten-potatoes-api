@@ -1,21 +1,28 @@
-import { Response } from "express";
-import { ValidationError } from "class-validator";
+import { Response } from 'express';
+import { ValidationError } from 'class-validator';
+import { STATUS_CODES } from '../enums/STATUS_CODES';
 
 const sendError = {
   constraints(errors: ValidationError[], res: Response) {
-    const constraints = errors.map((error) => error.constraints);
-    res.status(400).json(constraints);
+    const STATUS = STATUS_CODES.BAD_REQUEST;
+    const constraints = errors.map(error => error.constraints);
+    res.status(STATUS).json(constraints);
+    return STATUS;
   },
 
   server(err: any, res: Response) {
-    res.status(500).json({ error: err.toString() });
+    const STATUS = STATUS_CODES.SERVER_ERROR;
+    res.status(STATUS).json({ error: err.toString() });
+    return STATUS;
   },
 
   check400(err: any, res: Response) {
     if (err.status === 400) {
-      res.status(400).json({ msg: err.message });
+      const STATUS = STATUS_CODES.BAD_REQUEST;
+      res.status(STATUS).json({ msg: err.message });
+      return STATUS;
     } else {
-      this.server(err, res);
+      return this.server(err, res);
     }
   },
 };

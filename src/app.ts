@@ -1,53 +1,62 @@
-import express, { Request, Response, NextFunction } from "express";
-import * as bodyParser from "body-parser";
-import helmet from "helmet";
-import morgan from "morgan";
-import { connect } from "./db/db";
-import { Routes } from "./db/routes";
-import { requireToken } from "./db/middleware/requireToken";
-import { compose } from "compose-middleware";
+import express, { Request, Response, NextFunction } from 'express';
+import { connect } from './db/db';
+import { Routes } from './db/routes';
+import { compose } from 'compose-middleware';
+import { LoggerService } from './services/loggerService';
+import { STATUS_CODES } from './enums/STATUS_CODES';
+import { HTTP_METHODS_VALUES } from './enums/HTTP_METHODS';
+import { LOGGER_ROUTES, LOGGER_ROUTE_VALUES } from './enums/LOGGER_ROUTE_TYPES';
 
 connect();
 
 const app = express();
 
-app.use(
-  bodyParser.json({
-    limit: "50mb",
-    verify(req: any, res, buf, encoding) {
-      req.rawBody = buf;
-    },
-  })
-);
+app.use(express.json());
 
-app.use(helmet());
-app.use(morgan("combined"));
-
-Routes.forEach((route) => {
+Routes.forEach(route => {
   (app as any)[route.method](
     route.route,
     compose(route.middleware),
-    (req: Request, res: Response, next: NextFunction) => {
-      const result = new (route.controller as any)()[route.action](
-        req,
-        res,
-        next
-      );
-      if (result instanceof Promise) {
+    async (req: Request, res: Response, next: NextFunction) => {
+      const result = await new (route.controller as any)()[route.action](req, res, next);
+
+      let ROUTE: LOGGER_ROUTE_VALUES;
+
+      const routePathArr = route.route.split('/');
+      if (routePathArr.includes('users')) ROUTE = LOGGER_ROUTES.USERS;
+      else if (routePathArr.includes('movies')) ROUTE = LOGGER_ROUTES.MOVIES;
+      else ROUTE = LOGGER_ROUTES.BASE;
+
+      let data = req.body;
+      if (req.body.password) delete data.password;
+
+      const logger = new LoggerService(
+        ROUTE,
+        req.originalUrl,
+        req.method as HTTP_METHODS_VALUES,
+        req.headers.host,
+        req.headers['user-agent'],
         result
-          .then((result) =>
-            result !== null && result !== undefined
-              ? res.send(result)
-              : console.log(result)
-          )
-          .catch((err) => res.status(500).json({ error: err.toString() }));
-      } else if (result !== null && result !== undefined) {
-        res.json(result);
-      } else res.status(500).json({ msg: "something went wrong" });
+      );
+
+      if (result < 300) logger.info(`${route.action.toUpperCase()} ${ROUTE} SUCCESS`, data);
+      else logger.error(`${route.action.toUpperCase()} ${ROUTE} FAILURE`, data);
     }
   );
 });
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get('/', (req, res) => {
+  const logger = new LoggerService(
+    LOGGER_ROUTES.BASE,
+    req.originalUrl,
+    'get',
+    req.headers.host,
+    req.headers['user-agent'],
+    STATUS_CODES.OK
+  );
+
+  logger.info('Sanity test working');
+  res.send('<h1>Rotten Potatoes API</h1><h4>Made with ❤️ by Katie.</h4>');
+});
 
 export { app };
