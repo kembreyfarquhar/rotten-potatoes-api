@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { connect } from './db/db';
+import { connect } from './db';
 import { Routes } from './db/routes';
 import { compose } from 'compose-middleware';
 import { LoggerService } from './services/loggerService';
