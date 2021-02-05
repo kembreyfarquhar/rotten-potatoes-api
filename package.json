@@ -1,7 +1,7 @@
 {
   "name": "rotten-potatoes-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "A spoof off of Rotten Tomatoes. TypeScript Node.js API using Express.js, TypeORM, and SQLite.",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,9 +12,23 @@
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
     "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"
   },
-  "keywords": [],
+  "keywords": [
+    "API",
+    "TypeScript",
+    "Node",
+    "TypeORM",
+    "Express"
+  ],
+  "homepage": "https://github.com/kembreyfarquhar/rotten-potatoes-api/blob/main/README.md",
+  "repository": {
+    "url": "https://github.com/kembreyfarquhar/rotten-potatoes-api"
+  },
+  "bugs": {
+    "url": "https://github.com/kembreyfarquhar/rotten-potatoes-api/issues",
+    "email": "kembreyfarquhar@gmail.com"
+  },
   "author": "Katie Embrey-Farquhar",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.9",

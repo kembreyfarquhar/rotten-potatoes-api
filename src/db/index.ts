@@ -3,19 +3,19 @@ import { SnakeNamingStrategy } from '../snakeNamingStrategy';
 // import { QueryLogger } from '../services/queryLogger';
 
 export const connect = async () => {
-  const connection = await createConnection({
-    type: 'sqlite',
-    database: 'database.db',
-    name: 'default',
-    namingStrategy: new SnakeNamingStrategy(),
-    synchronize: false,
-    logging: true,
-    migrationsTableName: 'custom_migration_table',
-    entities: [__dirname + '/models/*.ts'],
-    migrations: [__dirname + '/migrations/*.ts'],
-    cli: {
-      entitiesDir: __dirname + '/models/',
-      migrationsDir: __dirname + '/migrations/',
-    },
-  });
+	const connection = await createConnection({
+		type: 'sqlite',
+		database: 'database.db',
+		name: 'default',
+		namingStrategy: new SnakeNamingStrategy(),
+		synchronize: false,
+		logging: true,
+		migrationsTableName: 'custom_migration_table',
+		entities: [__dirname + '/models/*.ts'],
+		migrations: [__dirname + '/migrations/*.ts'],
+		cli: {
+			entitiesDir: __dirname + '/models/',
+			migrationsDir: __dirname + '/migrations/',
+		},
+	});
 };
