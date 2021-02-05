@@ -2,9 +2,16 @@
 
 > A spoof off of Rotten Tomatoes. A RESTful, Object-Oriented API written in TypeScript using Node.js, Express.js, TypeORM, and SQLite. Inspired by [this blog post](https://medium.com/swlh/how-to-rest-api-a-tale-of-node-js-express-and-typescript-77bc598b280c) written by [Simone Staffa](https://medium.com/@simonestaffa).
 
-![ts](https://badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555) ![node.js](https://badgen.net/badge/-/node.js?icon=npm&label&labelColor=blue&color=555555) ![Express](https://badgen.net/badge/-/Express?label&labelColor=blue) ![typeorm](https://badgen.net/badge/-/typeorm?label&labelColor=blue) ![SQLite3](https://badgen.net/badge/-/SQLite3?label&labelColor=blue) ![license](https://badgen.net/badge/license/MIT?&labelColor=blue&color=555555)
+<!-- top language, version, license -->
 
-![commits](https://badgen.net/github/contributors/kembreyfarquhar/rotten-potatoes-api?color=purple) ![issues](https://badgen.net/github/issues/kembreyfarquhar/rotten-potatoes-api?color=purple) ![watchers](https://badgen.net/github/watchers/kembreyfarquhar/rotten-potatoes-api?color=purple)
+[![GitHub top language](https://img.shields.io/github/languages/top/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
+[![GitHub version](https://img.shields.io/github/package-json/v/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
+[![GitHub license](https://img.shields.io/github/license/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
+[![GitHub issues](https://img.shields.io/github/issues/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
 
 <!-- Describe very briefly but clearly what the project does.
 State if it is out-of-the-box user-friendly, so it’s clear to the user.
