@@ -5,16 +5,16 @@ import jsonwebtoken from 'jsonwebtoken';
 const secret = process.env.JWT_SECRET || 'secret';
 
 function genToken(user: Partial<User>) {
-  const payload = {
-    subject: user.id,
-    username: user.username,
-  };
+	const payload = {
+		subject: user.id,
+		username: user.username,
+	};
 
-  const options = {
-    expiresIn: '1d',
-  };
+	const options = {
+		expiresIn: '1d',
+	};
 
-  return jsonwebtoken.sign(payload, secret, options);
+	return jsonwebtoken.sign(payload, secret, options);
 }
 
 export { genToken };

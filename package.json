@@ -19,9 +19,16 @@
     "TypeORM",
     "Express"
   ],
-  "homepage": "",
+  "homepage": "https://github.com/kembreyfarquhar/rotten-potatoes-api/blob/main/README.md",
+  "repository": {
+    "url": "https://github.com/kembreyfarquhar/rotten-potatoes-api"
+  },
+  "bugs": {
+    "url": "https://github.com/kembreyfarquhar/rotten-potatoes-api/issues",
+    "email": "kembreyfarquhar@gmail.com"
+  },
   "author": "Katie Embrey-Farquhar",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.9",

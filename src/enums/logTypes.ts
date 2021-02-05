@@ -1,11 +1,11 @@
 const LOG_TYPES = {
-  console: 'console',
-  file: 'file',
+	console: 'console',
+	file: 'file',
 } as const;
 
 type LogType = {
-  console: typeof LOG_TYPES.console;
-  file: typeof LOG_TYPES.file;
+	console: typeof LOG_TYPES.console;
+	file: typeof LOG_TYPES.file;
 };
 
 type LOG_TYPE_KEYS = keyof LogType;

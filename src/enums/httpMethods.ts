@@ -1,15 +1,15 @@
 const HTTP_METHODS = {
-  GET: 'get',
-  POST: 'post',
-  PUT: 'put',
-  DELETE: 'delete',
+	GET: 'get',
+	POST: 'post',
+	PUT: 'put',
+	DELETE: 'delete',
 } as const;
 
 type HttpMethodTypes = {
-  GET: typeof HTTP_METHODS.GET;
-  POST: typeof HTTP_METHODS.POST;
-  PUT: typeof HTTP_METHODS.PUT;
-  DELETE: typeof HTTP_METHODS.DELETE;
+	GET: typeof HTTP_METHODS.GET;
+	POST: typeof HTTP_METHODS.POST;
+	PUT: typeof HTTP_METHODS.PUT;
+	DELETE: typeof HTTP_METHODS.DELETE;
 };
 
 type HTTP_METHODS_KEYS = keyof HttpMethodTypes;

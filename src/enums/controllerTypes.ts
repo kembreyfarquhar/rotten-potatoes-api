@@ -2,8 +2,8 @@ import { MovieController } from '../db/controllers/Movie.controller';
 import { UserController } from '../db/controllers/User.controller';
 
 const CONTROLLER_TYPES = {
-  USERS: UserController,
-  MOVIES: MovieController,
+	USERS: UserController,
+	MOVIES: MovieController,
 } as const;
 
 type CONTROLLER_TYPES_KEYS = keyof typeof CONTROLLER_TYPES;
