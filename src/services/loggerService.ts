@@ -1,5 +1,4 @@
 import { Logger, createLogger, format, transports } from 'winston';
-// import colors from 'colors';
 import { LOG_COLORS } from '../enums/logColors';
 import { HTTP_METHODS_VALUES } from '../enums/httpMethods';
 import { STATUS_CODES_VALUES } from '../enums/StatusCodes';
