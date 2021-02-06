@@ -2,11 +2,10 @@
 
 > A spoof off of Rotten Tomatoes. A RESTful, Object-Oriented API written in TypeScript using Node.js, Express.js, TypeORM, and SQLite. Inspired by [this blog post](https://medium.com/swlh/how-to-rest-api-a-tale-of-node-js-express-and-typescript-77bc598b280c) written by [Simone Staffa](https://medium.com/@simonestaffa).
 
-<!-- top language, version, license -->
-
 [![GitHub top language](https://img.shields.io/github/languages/top/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
 [![GitHub version](https://img.shields.io/github/package-json/v/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
-[![GitHub license](https://img.shields.io/github/license/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
+
+<!-- [![GitHub license](https://img.shields.io/github/license/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api) -->
 
 [![GitHub contributors](https://img.shields.io/github/contributors/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/kembreyfarquhar/rotten-potatoes-api)](https://github.com/kembreyfarquhar/rotten-potatoes-api)
@@ -193,4 +192,8 @@ See [HISTORY.md](HISTORY.md) for version history.
 
 MIT © Katie Embrey-Farquhar
 
-See [LICENSE.md](LICENSE.md) for more information.
+This project is licensed under:
+
+- [MIT License](http://spdx.org/licenses/MIT.html)
+
+See LICENSE file for more information.
