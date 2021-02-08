@@ -1,5 +1,5 @@
 import { LogTypeKeys } from '../../enums/logTypes';
-import { STATUS_CODES_VALUES } from '../../enums/StatusCodes';
+import { StatusCodeValues } from '../../enums/StatusCodes';
 import { HTTPMethodValues } from '../../enums/httpMethods';
 
 export type FormatParams = {
@@ -9,6 +9,6 @@ export type FormatParams = {
 	method: HTTPMethodValues;
 	host: string;
 	userAgent: string;
-	statusCode: STATUS_CODES_VALUES;
+	statusCode: StatusCodeValues;
 	log_data: any;
 };

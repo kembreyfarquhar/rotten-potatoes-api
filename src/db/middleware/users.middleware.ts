@@ -2,7 +2,7 @@ import { getRepository } from 'typeorm';
 import { User } from '../models/User.model';
 import { RequestHandler } from 'express';
 import { sendError } from '../../utils/sendError';
-import { STATUS_CODES } from '../../enums/StatusCodes';
+import { statusCodes } from '../../enums/StatusCodes';
 
 export const isUser: RequestHandler = async (req, res, next) => {
 	const { id } = req.params;
@@ -14,7 +14,7 @@ export const isUser: RequestHandler = async (req, res, next) => {
 		const user = await getRepository(User).createQueryBuilder('users').where(query, obj).getOne();
 		if (!user)
 			return res
-				.status(STATUS_CODES.NOT_FOUND)
+				.status(statusCodes.NOT_FOUND)
 				.json({ msg: `user ${id ? id : username} not found` });
 		else {
 			req.user = user;
@@ -31,12 +31,12 @@ export const userValidator: RequestHandler = (req, res, next) => {
 
 	console.log(req.body);
 	if (!keys.length) {
-		return res.status(STATUS_CODES.BAD_REQUEST).json({ msg: 'must contain a json body' });
+		return res.status(statusCodes.BAD_REQUEST).json({ msg: 'must contain a json body' });
 	} else if (!username || !password) {
-		return res.status(STATUS_CODES.BAD_REQUEST).json({ msg: 'must include username & password' });
+		return res.status(statusCodes.BAD_REQUEST).json({ msg: 'must include username & password' });
 	} else if (keys.length !== 2) {
 		return res
-			.status(STATUS_CODES.BAD_REQUEST)
+			.status(statusCodes.BAD_REQUEST)
 			.json({ msg: 'must only include username & password' });
 	} else next();
 };
@@ -46,16 +46,14 @@ export const userUpdateValidator: RequestHandler = (req, res, next) => {
 	const keys = Object.keys(req.body);
 
 	if (!keys.length) {
-		return res.status(STATUS_CODES.BAD_REQUEST).json({ msg: 'must contain a json body' });
+		return res.status(statusCodes.BAD_REQUEST).json({ msg: 'must contain a json body' });
 	} else if (req.body.id) {
-		return res.status(STATUS_CODES.BAD_REQUEST).json({ msg: 'cannot change user id' });
+		return res.status(statusCodes.BAD_REQUEST).json({ msg: 'cannot change user id' });
 	} else if (!username && !password) {
-		return res
-			.status(STATUS_CODES.BAD_REQUEST)
-			.json({ msg: 'must include a username or password' });
+		return res.status(statusCodes.BAD_REQUEST).json({ msg: 'must include a username or password' });
 	} else if (keys.length > 1) {
 		return res
-			.status(STATUS_CODES.BAD_REQUEST)
+			.status(statusCodes.BAD_REQUEST)
 			.json({ msg: 'may only change username or password, one at a time' });
 	} else next();
 };
@@ -67,7 +65,7 @@ export const userTokenValidator: RequestHandler = (req, res, next) => {
 		next();
 	} else {
 		return res
-			.status(STATUS_CODES.UNAUTHORIZED)
+			.status(statusCodes.UNAUTHORIZED)
 			.json({ msg: 'user token and user id do not match' });
 	}
 };

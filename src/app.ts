@@ -3,7 +3,7 @@ import { connect } from './db/db';
 import { Routes } from './db/routes';
 import { compose } from 'compose-middleware';
 import { LoggerService } from './services/loggerService';
-import { STATUS_CODES } from './enums/StatusCodes';
+import { statusCodes } from './enums/StatusCodes';
 import { HTTPMethodValues } from './enums/httpMethods';
 import { loggerRoutes, LoggerRouteValues } from './enums/loggerRouteTypes';
 
@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
 		'get',
 		req.headers.host,
 		req.headers['user-agent'],
-		STATUS_CODES.OK
+		statusCodes.OK
 	);
 
 	logger.info('Sanity test working');

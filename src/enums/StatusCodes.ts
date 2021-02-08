@@ -1,4 +1,4 @@
-const STATUS_CODES = {
+const statusCodes = {
 	OK: 200,
 	CREATED: 201,
 	BAD_REQUEST: 400,
@@ -8,15 +8,15 @@ const STATUS_CODES = {
 } as const;
 
 type StatusCodeTypes = {
-	OK: typeof STATUS_CODES.OK;
-	CREATED: typeof STATUS_CODES.CREATED;
-	BAD_REQUEST: typeof STATUS_CODES.BAD_REQUEST;
-	UNAUTHORIZED: typeof STATUS_CODES.UNAUTHORIZED;
-	NOT_FOUND: typeof STATUS_CODES.NOT_FOUND;
-	SERVER_ERROR: typeof STATUS_CODES.SERVER_ERROR;
+	OK: 200;
+	CREATED: 201;
+	BAD_REQUEST: 400;
+	UNAUTHORIZED: 401;
+	NOT_FOUND: 404;
+	SERVER_ERROR: 500;
 };
 
-type STATUS_CODES_KEYS = keyof StatusCodeTypes;
-type STATUS_CODES_VALUES = StatusCodeTypes[STATUS_CODES_KEYS];
+type StatusCodeKeys = keyof StatusCodeTypes;
+type StatusCodeValues = StatusCodeTypes[StatusCodeKeys];
 
-export { STATUS_CODES, STATUS_CODES_KEYS, STATUS_CODES_VALUES };
+export { statusCodes, StatusCodeKeys, StatusCodeValues };

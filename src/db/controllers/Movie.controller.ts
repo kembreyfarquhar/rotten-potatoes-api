@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Movie } from '../models/Movie.model';
 import { sendError } from '../../utils/sendError';
 import { validate } from 'class-validator';
-import { STATUS_CODES } from '../../enums/StatusCodes';
+import { statusCodes } from '../../enums/StatusCodes';
 
 export class MovieController {
 	private movieRepository = getRepository(Movie);
@@ -11,7 +11,7 @@ export class MovieController {
 	async all(_: Request, res: Response) {
 		try {
 			const movies = await this.movieRepository.find();
-			const STATUS = STATUS_CODES.OK;
+			const STATUS = statusCodes.OK;
 			res.status(STATUS).json(movies);
 			return STATUS;
 		} catch (err) {
@@ -23,7 +23,7 @@ export class MovieController {
 	async findMovies(req: Request, res: Response) {
 		//@ts-ignore
 		const movie = req.movies;
-		const STATUS = STATUS_CODES.OK;
+		const STATUS = statusCodes.OK;
 		res.status(STATUS).json(movie);
 		return STATUS;
 	}
@@ -43,7 +43,7 @@ export class MovieController {
 			if (errors.length > 0) sendError.constraints(errors, res);
 			else {
 				const savedMovie = await this.movieRepository.save(movie);
-				const STATUS = STATUS_CODES.CREATED;
+				const STATUS = statusCodes.CREATED;
 				res.status(STATUS).json(savedMovie);
 				return STATUS;
 			}
@@ -62,7 +62,7 @@ export class MovieController {
 		const changes = { ...incomingChanges, last_updated, last_updated_user };
 		try {
 			await this.movieRepository.update(id, changes);
-			const STATUS = STATUS_CODES.CREATED;
+			const STATUS = statusCodes.CREATED;
 			res.status(STATUS).json({ msg: 'updated successfully' });
 			return STATUS;
 		} catch (err) {
@@ -76,7 +76,7 @@ export class MovieController {
 		const id = foundMovie.id;
 		try {
 			await this.movieRepository.remove(foundMovie);
-			const STATUS = STATUS_CODES.CREATED;
+			const STATUS = statusCodes.CREATED;
 			res.status(STATUS).json({ msg: `movie with id:${id} successfully deleted` });
 			return STATUS;
 		} catch (err) {

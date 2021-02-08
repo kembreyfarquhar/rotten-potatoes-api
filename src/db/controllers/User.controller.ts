@@ -5,7 +5,7 @@ import { hashSync, compareSync } from 'bcryptjs';
 import { genToken } from '../../utils/genToken';
 import { sendError } from '../../utils/sendError';
 import { validate } from 'class-validator';
-import { STATUS_CODES } from '../../enums/StatusCodes';
+import { statusCodes } from '../../enums/StatusCodes';
 
 export class UserController {
 	private userRepository = getRepository(User);
@@ -16,7 +16,7 @@ export class UserController {
 
 			users.forEach(user => delete user.password);
 
-			const STATUS = STATUS_CODES.OK;
+			const STATUS = statusCodes.OK;
 			res.status(STATUS).json(users);
 			return STATUS;
 		} catch (err) {
@@ -28,7 +28,7 @@ export class UserController {
 	byID(req: Request, res: Response) {
 		const user = req.user;
 		delete user.password;
-		const STATUS = STATUS_CODES.OK;
+		const STATUS = statusCodes.OK;
 		res.status(STATUS).json(user || {});
 		return STATUS;
 	}
@@ -53,8 +53,8 @@ export class UserController {
 
 				const token = genToken(savedUser);
 
-				res.status(STATUS_CODES.CREATED).json({ token, ...savedUser });
-				return STATUS_CODES.CREATED;
+				res.status(statusCodes.CREATED).json({ token, ...savedUser });
+				return statusCodes.CREATED;
 			}
 		} catch (err) {
 			const STATUS = sendError.check400(err, res);
@@ -74,12 +74,12 @@ export class UserController {
 				delete foundUser.password;
 
 				const token = genToken(foundUser);
-				const STATUS = STATUS_CODES.OK;
+				const STATUS = statusCodes.OK;
 
 				res.status(STATUS).json({ token, ...foundUser });
 				return STATUS;
 			} else {
-				const STATUS = STATUS_CODES.UNAUTHORIZED;
+				const STATUS = statusCodes.UNAUTHORIZED;
 				res.status(STATUS).json({ error: 'Invalid credentials' });
 				return STATUS;
 			}
@@ -95,7 +95,7 @@ export class UserController {
 		try {
 			await this.userRepository.update(req.params.id, changes);
 
-			const STATUS = STATUS_CODES.CREATED;
+			const STATUS = statusCodes.CREATED;
 
 			res.status(STATUS).json({ msg: 'updated successfully' });
 			return STATUS;
@@ -112,7 +112,7 @@ export class UserController {
 		try {
 			await this.userRepository.remove(foundUser);
 
-			const STATUS = STATUS_CODES.CREATED;
+			const STATUS = statusCodes.CREATED;
 
 			res.status(STATUS).json({ msg: `user with id:${id} successfully deleted` });
 			return STATUS;

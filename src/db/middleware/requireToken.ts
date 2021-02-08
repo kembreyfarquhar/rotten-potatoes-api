@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 import { loggerRoutes } from '../../enums/loggerRouteTypes';
 import { HTTPMethodValues } from '../../enums/httpMethods';
-import { STATUS_CODES } from '../../enums/StatusCodes';
+import { statusCodes } from '../../enums/StatusCodes';
 import { LoggerService } from '../../services/loggerService';
 import { getKeyByValue } from '../../utils/getObjectKey';
 const secret = process.env.JWT_SECRET || 'secret';
@@ -28,9 +28,9 @@ const requireToken: RequestHandler = (req, res, next) => {
 	if (token) {
 		jsonwebtoken.verify(token, secret, (err, decodedToken) => {
 			if (err) {
-				logger.statusCode = STATUS_CODES.UNAUTHORIZED;
-				logger.warn(`${getKeyByValue(STATUS_CODES, STATUS_CODES.UNAUTHORIZED)} - TOKEN INVALID`);
-				res.status(STATUS_CODES.UNAUTHORIZED).json({ message: 'Invalid token' });
+				logger.statusCode = statusCodes.UNAUTHORIZED;
+				logger.warn(`${getKeyByValue(statusCodes, statusCodes.UNAUTHORIZED)} - TOKEN INVALID`);
+				res.status(statusCodes.UNAUTHORIZED).json({ message: 'Invalid token' });
 			} else {
 				logger.statusCode = null;
 				logger.info(`TOKEN SUCCESSFULLY VALIDATED`);
@@ -39,9 +39,9 @@ const requireToken: RequestHandler = (req, res, next) => {
 			}
 		});
 	} else {
-		logger.statusCode = STATUS_CODES.UNAUTHORIZED;
-		logger.warn(`${getKeyByValue(STATUS_CODES, STATUS_CODES.UNAUTHORIZED)} - NO TOKEN PROVIDED`);
-		res.status(STATUS_CODES.UNAUTHORIZED).json({ message: 'Please provide a token' });
+		logger.statusCode = statusCodes.UNAUTHORIZED;
+		logger.warn(`${getKeyByValue(statusCodes, statusCodes.UNAUTHORIZED)} - NO TOKEN PROVIDED`);
+		res.status(statusCodes.UNAUTHORIZED).json({ message: 'Please provide a token' });
 	}
 };
 

@@ -2,7 +2,7 @@ import { getRepository } from 'typeorm';
 import { Movie } from '../models/Movie.model';
 import { RequestHandler } from 'express';
 import { sendError } from '../../utils/sendError';
-import { STATUS_CODES } from '../../enums/StatusCodes';
+import { statusCodes } from '../../enums/StatusCodes';
 
 export const isMovie: RequestHandler = async (req, res, next) => {
 	try {
@@ -12,7 +12,7 @@ export const isMovie: RequestHandler = async (req, res, next) => {
 				.where(req.query)
 				.getMany();
 
-			if (!movies.length) res.status(STATUS_CODES.NOT_FOUND).json({ msg: `movie(s) not found` });
+			if (!movies.length) res.status(statusCodes.NOT_FOUND).json({ msg: `movie(s) not found` });
 			else {
 				req.movies = movies;
 				next();
@@ -24,7 +24,7 @@ export const isMovie: RequestHandler = async (req, res, next) => {
 				.where('movies.id = :id', { id })
 				.getOne();
 
-			if (!movie) res.status(STATUS_CODES.NOT_FOUND).json({ msg: `movie ${id} not found` });
+			if (!movie) res.status(statusCodes.NOT_FOUND).json({ msg: `movie ${id} not found` });
 			else {
 				req.movie = movie;
 				next();
@@ -40,14 +40,14 @@ export const movieValidator: RequestHandler = (req, res, next) => {
 	const keys = Object.keys(req.body);
 
 	if (!keys.length) {
-		res.status(STATUS_CODES.BAD_REQUEST).json({ msg: 'must contain a json body' });
+		res.status(statusCodes.BAD_REQUEST).json({ msg: 'must contain a json body' });
 	} else if (!title || !plot_summary || !duration) {
 		res
-			.status(STATUS_CODES.BAD_REQUEST)
+			.status(statusCodes.BAD_REQUEST)
 			.json({ msg: 'must include title, plot_summary, & duration' });
 	} else if (keys.length !== 3) {
 		res
-			.status(STATUS_CODES.BAD_REQUEST)
+			.status(statusCodes.BAD_REQUEST)
 			.json({ msg: 'must only include title, plot_summary, & duration' });
 	} else next();
 };
@@ -58,10 +58,10 @@ export const movieUpdateValidator: RequestHandler = (req, res, next) => {
 	const keys = Object.keys(req.body);
 
 	if (!keys.length) {
-		res.status(STATUS_CODES.BAD_REQUEST).json({ msg: 'must contain a json body' });
+		res.status(statusCodes.BAD_REQUEST).json({ msg: 'must contain a json body' });
 	} else if (!title && !plot_summary && !duration) {
 		res
-			.status(STATUS_CODES.BAD_REQUEST)
+			.status(statusCodes.BAD_REQUEST)
 			.json({ msg: 'must include title, plot_summary, or duration' });
 	} else if (
 		req.body.id ||
@@ -70,7 +70,7 @@ export const movieUpdateValidator: RequestHandler = (req, res, next) => {
 		req.body.created_by_user_id ||
 		req.body.last_updated_user_id
 	) {
-		res.status(STATUS_CODES.BAD_REQUEST).json({
+		res.status(statusCodes.BAD_REQUEST).json({
 			msg: 'cannot change movie id, created_at, created_by_user_id, or last_updated_user_id',
 		});
 	} else next();
