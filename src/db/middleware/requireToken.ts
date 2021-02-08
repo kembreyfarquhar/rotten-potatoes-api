@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
-import { LOGGER_ROUTES } from '../../enums/loggerRouteTypes';
+import { loggerRoutes } from '../../enums/loggerRouteTypes';
 import { HTTPMethodValues } from '../../enums/httpMethods';
 import { STATUS_CODES } from '../../enums/StatusCodes';
 import { LoggerService } from '../../services/loggerService';
@@ -18,7 +18,7 @@ const requireToken: RequestHandler = (req, res, next) => {
 	const token = req.headers.authorization;
 
 	const logger = new LoggerService(
-		LOGGER_ROUTES.TOKEN_AUTHENTICATION,
+		loggerRoutes.TOKEN_AUTHENTICATION,
 		req.originalUrl,
 		req.method as HTTPMethodValues,
 		req.headers['host'],

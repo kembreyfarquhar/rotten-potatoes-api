@@ -1,4 +1,4 @@
-const LOGGER_ROUTES = {
+const loggerRoutes = {
 	BASE: 'BASE',
 	USERS: 'USERS',
 	MOVIES: 'MOVIES',
@@ -6,13 +6,13 @@ const LOGGER_ROUTES = {
 } as const;
 
 type LoggerRoutTypes = {
-	BASE: typeof LOGGER_ROUTES.BASE;
-	USERS: typeof LOGGER_ROUTES.USERS;
-	MOVIES: typeof LOGGER_ROUTES.MOVIES;
-	TOKEN_AUTHENTICATION: typeof LOGGER_ROUTES.TOKEN_AUTHENTICATION;
+	BASE: 'BASE';
+	USERS: 'USERS';
+	MOVIES: 'MOVIES';
+	TOKEN_AUTHENTICATION: 'TOKEN AUTHENTICATION';
 };
 
-type LOGGER_ROUTES_KEYS = keyof LoggerRoutTypes;
-type LOGGER_ROUTE_VALUES = LoggerRoutTypes[LOGGER_ROUTES_KEYS];
+type LoggerRouteKeys = keyof LoggerRoutTypes;
+type LoggerRouteValues = LoggerRoutTypes[LoggerRouteKeys];
 
-export { LOGGER_ROUTES, LOGGER_ROUTES_KEYS, LOGGER_ROUTE_VALUES };
+export { loggerRoutes, LoggerRouteKeys, LoggerRouteValues };

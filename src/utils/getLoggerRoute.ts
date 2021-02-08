@@ -1,12 +1,12 @@
-import { LOGGER_ROUTES, LOGGER_ROUTE_VALUES } from '../enums/loggerRouteTypes';
+import { loggerRoutes, LoggerRouteValues } from '../enums/loggerRouteTypes';
 
 const getLoggerRoute = (path: string) => {
 	const pathArr = path.split('/');
-	let ROUTE: LOGGER_ROUTE_VALUES;
+	let ROUTE: LoggerRouteValues;
 
-	if (pathArr.includes('users')) ROUTE = LOGGER_ROUTES.USERS;
-	else if (pathArr.includes('movies')) ROUTE = LOGGER_ROUTES.MOVIES;
-	else ROUTE = LOGGER_ROUTES.BASE;
+	if (pathArr.includes('users')) ROUTE = loggerRoutes.USERS;
+	else if (pathArr.includes('movies')) ROUTE = loggerRoutes.MOVIES;
+	else ROUTE = loggerRoutes.BASE;
 
 	return ROUTE;
 };

@@ -5,7 +5,7 @@ import { compose } from 'compose-middleware';
 import { LoggerService } from './services/loggerService';
 import { STATUS_CODES } from './enums/StatusCodes';
 import { HTTPMethodValues } from './enums/httpMethods';
-import { LOGGER_ROUTES, LOGGER_ROUTE_VALUES } from './enums/loggerRouteTypes';
+import { loggerRoutes, LoggerRouteValues } from './enums/loggerRouteTypes';
 
 connect();
 
@@ -20,12 +20,12 @@ Routes.forEach(route => {
 		async (req: Request, res: Response, next: NextFunction) => {
 			const result = await new (route.controller as any)()[route.action](req, res, next);
 
-			let ROUTE: LOGGER_ROUTE_VALUES;
+			let ROUTE: LoggerRouteValues;
 
 			const routePathArr = route.route.split('/');
-			if (routePathArr.includes('users')) ROUTE = LOGGER_ROUTES.USERS;
-			else if (routePathArr.includes('movies')) ROUTE = LOGGER_ROUTES.MOVIES;
-			else ROUTE = LOGGER_ROUTES.BASE;
+			if (routePathArr.includes('users')) ROUTE = loggerRoutes.USERS;
+			else if (routePathArr.includes('movies')) ROUTE = loggerRoutes.MOVIES;
+			else ROUTE = loggerRoutes.BASE;
 
 			let data = { ...req.body };
 			if (data.password) delete data.password;
@@ -49,7 +49,7 @@ Routes.forEach(route => {
 
 app.get('/', (req, res) => {
 	const logger = new LoggerService(
-		LOGGER_ROUTES.BASE,
+		loggerRoutes.BASE,
 		req.originalUrl,
 		'get',
 		req.headers.host,

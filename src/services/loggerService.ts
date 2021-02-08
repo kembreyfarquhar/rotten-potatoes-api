@@ -2,7 +2,7 @@ import { Logger, createLogger, format, transports } from 'winston';
 import { logColors } from '../enums/logColors';
 import { HTTPMethodValues } from '../enums/httpMethods';
 import { STATUS_CODES_VALUES } from '../enums/StatusCodes';
-import { LOGGER_ROUTE_VALUES } from '../enums/loggerRouteTypes';
+import { LoggerRouteValues } from '../enums/loggerRouteTypes';
 import { FormatParams } from '../types/logger';
 
 const { combine, printf } = format;
@@ -110,7 +110,7 @@ function logFormat(params: FormatParams) {
 
 export class LoggerService {
 	log_data: any;
-	route: LOGGER_ROUTE_VALUES;
+	route: LoggerRouteValues;
 	path: string;
 	logger: Logger;
 	method: HTTPMethodValues;
@@ -119,7 +119,7 @@ export class LoggerService {
 	statusCode: STATUS_CODES_VALUES;
 
 	constructor(
-		route: LOGGER_ROUTE_VALUES,
+		route: LoggerRouteValues,
 		path: string = null,
 		method: HTTPMethodValues = null,
 		host: string = null,
