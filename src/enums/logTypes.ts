@@ -1,14 +1,14 @@
-const LOG_TYPES = {
+const logTypes = {
 	console: 'console',
 	file: 'file',
 } as const;
 
 type LogType = {
-	console: typeof LOG_TYPES.console;
-	file: typeof LOG_TYPES.file;
+	console: 'console';
+	file: 'file';
 };
 
-type LOG_TYPE_KEYS = keyof LogType;
-type LOG_TYPE_VALUES = LogType[LOG_TYPE_KEYS];
+type LogTypeKeys = keyof LogType;
+type LogTypeValues = LogType[LogTypeKeys];
 
-export { LOG_TYPES, LOG_TYPE_KEYS, LOG_TYPE_VALUES };
+export { logTypes, LogTypeKeys, LogTypeValues };
