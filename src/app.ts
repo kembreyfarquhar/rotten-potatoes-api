@@ -4,7 +4,7 @@ import { Routes } from './db/routes';
 import { compose } from 'compose-middleware';
 import { LoggerService } from './services/loggerService';
 import { STATUS_CODES } from './enums/StatusCodes';
-import { HTTP_METHODS_VALUES } from './enums/httpMethods';
+import { HTTPMethodValues } from './enums/httpMethods';
 import { LOGGER_ROUTES, LOGGER_ROUTE_VALUES } from './enums/loggerRouteTypes';
 
 connect();
@@ -33,7 +33,7 @@ Routes.forEach(route => {
 			const logger = new LoggerService(
 				ROUTE,
 				req.originalUrl,
-				req.method as HTTP_METHODS_VALUES,
+				req.method as HTTPMethodValues,
 				req.headers.host,
 				req.headers['user-agent'],
 				result

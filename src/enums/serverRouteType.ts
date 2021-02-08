@@ -1,8 +1,8 @@
 import { CONTROLLER_TYPES_VALUES } from './controllerTypes';
-import { HTTP_METHODS_VALUES } from './httpMethods';
+import { HTTPMethodValues } from './httpMethods';
 
 type ServerRouteType = {
-	method: HTTP_METHODS_VALUES;
+	method: HTTPMethodValues;
 	route: string;
 	controller: CONTROLLER_TYPES_VALUES;
 	action: string;

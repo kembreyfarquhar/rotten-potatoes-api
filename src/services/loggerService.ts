@@ -1,6 +1,6 @@
 import { Logger, createLogger, format, transports } from 'winston';
 import { LOG_COLORS } from '../enums/logColors';
-import { HTTP_METHODS_VALUES } from '../enums/httpMethods';
+import { HTTPMethodValues } from '../enums/httpMethods';
 import { STATUS_CODES_VALUES } from '../enums/StatusCodes';
 import { LOGGER_ROUTE_VALUES } from '../enums/loggerRouteTypes';
 import { FormatParams } from '../types/logger';
@@ -114,7 +114,7 @@ export class LoggerService {
 	route: LOGGER_ROUTE_VALUES;
 	path: string;
 	logger: Logger;
-	method: HTTP_METHODS_VALUES;
+	method: HTTPMethodValues;
 	host: string;
 	userAgent: string;
 	statusCode: STATUS_CODES_VALUES;
@@ -122,7 +122,7 @@ export class LoggerService {
 	constructor(
 		route: LOGGER_ROUTE_VALUES,
 		path: string = null,
-		method: HTTP_METHODS_VALUES = null,
+		method: HTTPMethodValues = null,
 		host: string = null,
 		userAgent: string = null,
 		statusCode: STATUS_CODES_VALUES = null

@@ -1,18 +1,18 @@
-const HTTP_METHODS = {
-	GET: 'get',
-	POST: 'post',
-	PUT: 'put',
-	DELETE: 'delete',
-} as const;
+enum HTTPMethods {
+	GET = 'get',
+	POST = 'post',
+	PUT = 'put',
+	DELETE = 'delete',
+}
 
-type HttpMethodTypes = {
-	GET: typeof HTTP_METHODS.GET;
-	POST: typeof HTTP_METHODS.POST;
-	PUT: typeof HTTP_METHODS.PUT;
-	DELETE: typeof HTTP_METHODS.DELETE;
+type HTTPMethodTypes = {
+	GET: 'get';
+	POST: 'post';
+	PUT: 'put';
+	DELETE: 'delete';
 };
 
-type HTTP_METHODS_KEYS = keyof HttpMethodTypes;
-type HTTP_METHODS_VALUES = HttpMethodTypes[HTTP_METHODS_KEYS];
+type HTTPMethodKeys = keyof HTTPMethodTypes;
+type HTTPMethodValues = HTTPMethodTypes[HTTPMethodKeys];
 
-export { HTTP_METHODS, HTTP_METHODS_KEYS, HTTP_METHODS_VALUES };
+export { HTTPMethods, HTTPMethodKeys, HTTPMethodValues };
