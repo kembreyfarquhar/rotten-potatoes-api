@@ -1,5 +1,5 @@
 import { Logger, createLogger, format, transports } from 'winston';
-import { LOG_COLORS } from '../enums/logColors';
+import { logColors } from '../enums/logColors';
 import { HTTPMethodValues } from '../enums/httpMethods';
 import { STATUS_CODES_VALUES } from '../enums/StatusCodes';
 import { LOGGER_ROUTE_VALUES } from '../enums/loggerRouteTypes';
@@ -40,20 +40,19 @@ function logFormat(params: FormatParams) {
 	const obj = info.stack ? formatObject(info.stack) : info.obj ? formatObject(info.obj) : null;
 
 	let infoColor;
-	if (infoLevel === 'INFO') infoColor = LOG_COLORS.INFO;
-	else if (infoLevel === 'DEBUG') infoColor = LOG_COLORS.DEBUG;
-	else if (infoLevel === 'WARN') infoColor = LOG_COLORS.WARN;
-	else if (infoLevel === 'ERROR') infoColor = LOG_COLORS.ERROR;
-	else infoColor = LOG_COLORS.BLACK;
+	if (infoLevel === 'INFO') infoColor = logColors.INFO;
+	else if (infoLevel === 'DEBUG') infoColor = logColors.DEBUG;
+	else if (infoLevel === 'WARN') infoColor = logColors.WARN;
+	else if (infoLevel === 'ERROR') infoColor = logColors.ERROR;
+	else infoColor = logColors.BLACK;
 
 	let statusColor;
-	if (statusCode && statusCode < 300) statusColor = LOG_COLORS.SUCCESS;
-	else if (statusCode && statusCode < 500 && statusCode > 399) statusColor = LOG_COLORS.WARN;
-	else if (statusCode && statusCode > 499) statusColor = LOG_COLORS.ERROR;
-	else statusColor = LOG_COLORS.BLACK;
+	if (statusCode && statusCode < 300) statusColor = logColors.SUCCESS;
+	else if (statusCode && statusCode < 500 && statusCode > 399) statusColor = logColors.WARN;
+	else if (statusCode && statusCode > 499) statusColor = logColors.ERROR;
+	else statusColor = logColors.BLACK;
 
-	const dateMsg =
-		logType === 'console' ? LOG_COLORS.DATE(`[${dateFormat()}]`) : `[${dateFormat()}]`;
+	const dateMsg = logType === 'console' ? logColors.DATE(`[${dateFormat()}]`) : `[${dateFormat()}]`;
 
 	const levelMsg = logType === 'console' ? infoColor(`${infoLevel}`) : `${infoLevel}`;
 
@@ -63,14 +62,14 @@ function logFormat(params: FormatParams) {
 
 	const methodMsg =
 		method && logType === 'console'
-			? LOG_COLORS.METHOD(`${method.toUpperCase()}`)
+			? logColors.METHOD(`${method.toUpperCase()}`)
 			: method
 			? `${method.toUpperCase()}`
 			: undefined;
 
 	const pathMsg =
 		path && logType === 'console'
-			? LOG_COLORS.ROUTE(`endpoint: "${path}"`)
+			? logColors.ROUTE(`endpoint: "${path}"`)
 			: path
 			? `endpoint: "${path}"`
 			: undefined;
@@ -83,7 +82,7 @@ function logFormat(params: FormatParams) {
 			: undefined;
 
 	const messageMsg =
-		logType === 'console' ? LOG_COLORS.MESSAGE(`${info.message}`) : `${info.message}`;
+		logType === 'console' ? logColors.MESSAGE(`${info.message}`) : `${info.message}`;
 
 	const objMsg = info.obj && Object.keys(info.obj).length > 0 ? `\ndata: ${obj}` : undefined;
 

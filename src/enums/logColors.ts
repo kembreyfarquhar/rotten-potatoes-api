@@ -1,6 +1,6 @@
 import { colors } from '../services/cliColorService';
 
-const LOG_COLORS = {
+const logColors = {
 	DATE(s: string) {
 		return colors.multiple(['bold', 'underline'], s);
 	},
@@ -15,4 +15,4 @@ const LOG_COLORS = {
 	BLACK: colors.black,
 } as const;
 
-export { LOG_COLORS };
+export { logColors };
