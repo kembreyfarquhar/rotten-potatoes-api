@@ -1,28 +1,33 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ValidationError } from 'class-validator';
-import { STATUS_CODES } from '../enums/StatusCodes';
+import { statusCodes } from '../enums/statusCodes';
+import { handleFailure } from './handleMiddlewareFailure';
+import { getLoggerRoute } from './getLoggerRoute';
 
 const sendError = {
-	constraints(errors: ValidationError[], res: Response) {
-		const STATUS = STATUS_CODES.BAD_REQUEST;
+	constraints(errors: ValidationError[], res: Response, req: Request) {
+		const { status, label } = statusCodes.get('BAD_REQUEST');
 		const constraints = errors.map(error => error.constraints);
-		res.status(STATUS).json(constraints);
-		return STATUS;
+		const route = getLoggerRoute(req.originalUrl);
+		handleFailure(req, res, status, constraints, label, route);
+		return status;
 	},
 
-	server(err: any, res: Response) {
-		const STATUS = STATUS_CODES.SERVER_ERROR;
-		res.status(STATUS).json({ error: err.toString() });
-		return STATUS;
+	server(err: any, res: Response, req: Request) {
+		const { status, label } = statusCodes.get('SERVER_ERROR');
+		const route = getLoggerRoute(req.originalUrl);
+		handleFailure(req, res, status, err.toString(), label, route);
+		return status;
 	},
 
-	check400(err: any, res: Response) {
+	check400(err: any, res: Response, req: Request) {
 		if (err.status === 400) {
-			const STATUS = STATUS_CODES.BAD_REQUEST;
-			res.status(STATUS).json({ msg: err.message });
-			return STATUS;
+			const { status, label } = statusCodes.get('BAD_REQUEST');
+			const route = getLoggerRoute(req.originalUrl);
+			handleFailure(req, res, status, err.message, label, route);
+			return status;
 		} else {
-			return this.server(err, res);
+			return this.server(err, res, req);
 		}
 	},
 };
