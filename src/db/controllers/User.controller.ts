@@ -5,22 +5,20 @@ import { hashSync, compareSync } from 'bcryptjs';
 import { genToken } from '../../utils/genToken';
 import { sendError } from '../../utils/sendError';
 import { validate } from 'class-validator';
-import { STATUS_CODES } from '../../enums/StatusCodes';
+import { statusCodes } from '../../enums/statusCodes';
 
 export class UserController {
 	private userRepository = getRepository(User);
 
-	async all(_: Request, res: Response) {
+	async all(req: Request, res: Response) {
 		try {
 			const users = await this.userRepository.find();
-
 			users.forEach(user => delete user.password);
-
-			const STATUS = STATUS_CODES.OK;
+			const STATUS = statusCodes.get('OK').status;
 			res.status(STATUS).json(users);
 			return STATUS;
 		} catch (err) {
-			const STATUS = sendError.server(err, res);
+			const STATUS = sendError.server(err, res, req);
 			return STATUS;
 		}
 	}
@@ -28,7 +26,7 @@ export class UserController {
 	byID(req: Request, res: Response) {
 		const user = req.user;
 		delete user.password;
-		const STATUS = STATUS_CODES.OK;
+		const STATUS = statusCodes.get('OK').status;
 		res.status(STATUS).json(user || {});
 		return STATUS;
 	}
@@ -40,24 +38,19 @@ export class UserController {
 
 		try {
 			const errors = await validate(user);
-
 			if (errors.length > 0) {
-				sendError.constraints(errors, res);
+				sendError.constraints(errors, res, req);
 			} else {
 				const hash = hashSync(user.password, 10);
 				user.password = hash;
-
 				const savedUser = await this.userRepository.save(user);
-
 				delete savedUser.password;
-
 				const token = genToken(savedUser);
-
-				res.status(STATUS_CODES.CREATED).json({ token, ...savedUser });
-				return STATUS_CODES.CREATED;
+				res.status(statusCodes.get('CREATED').status).json({ token, ...savedUser });
+				return statusCodes.get('CREATED').status;
 			}
 		} catch (err) {
-			const STATUS = sendError.check400(err, res);
+			const STATUS = sendError.check400(err, res, req);
 			return STATUS;
 		}
 	}
@@ -66,25 +59,22 @@ export class UserController {
 		const user = new User();
 		user.username = req.body.username;
 		user.password = req.body.password;
-
 		const foundUser = req.user;
 
 		try {
 			if (compareSync(user.password, foundUser.password)) {
 				delete foundUser.password;
-
 				const token = genToken(foundUser);
-				const STATUS = STATUS_CODES.OK;
-
+				const STATUS = statusCodes.get('OK').status;
 				res.status(STATUS).json({ token, ...foundUser });
 				return STATUS;
 			} else {
-				const STATUS = STATUS_CODES.UNAUTHORIZED;
+				const STATUS = statusCodes.get('UNAUTHORIZED').status;
 				res.status(STATUS).json({ error: 'Invalid credentials' });
 				return STATUS;
 			}
 		} catch (err) {
-			const STATUS = sendError.server(err, res);
+			const STATUS = sendError.server(err, res, req);
 			return STATUS;
 		}
 	}
@@ -94,13 +84,11 @@ export class UserController {
 
 		try {
 			await this.userRepository.update(req.params.id, changes);
-
-			const STATUS = STATUS_CODES.CREATED;
-
+			const STATUS = statusCodes.get('CREATED').status;
 			res.status(STATUS).json({ msg: 'updated successfully' });
 			return STATUS;
 		} catch (err) {
-			const STATUS = sendError.check400(err, res);
+			const STATUS = sendError.check400(err, res, req);
 			return STATUS;
 		}
 	}
@@ -111,13 +99,11 @@ export class UserController {
 
 		try {
 			await this.userRepository.remove(foundUser);
-
-			const STATUS = STATUS_CODES.CREATED;
-
+			const STATUS = statusCodes.get('CREATED').status;
 			res.status(STATUS).json({ msg: `user with id:${id} successfully deleted` });
 			return STATUS;
 		} catch (err) {
-			const STATUS = sendError.server(err, res);
+			const STATUS = sendError.server(err, res, req);
 			return STATUS;
 		}
 	}
