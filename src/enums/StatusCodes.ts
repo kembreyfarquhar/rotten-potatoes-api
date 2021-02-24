@@ -1,22 +1,12 @@
-const statusCodes = {
-	OK: 200,
-	CREATED: 201,
-	BAD_REQUEST: 400,
-	UNAUTHORIZED: 401,
-	NOT_FOUND: 404,
-	SERVER_ERROR: 500,
-} as const;
+import { Map } from 'immutable';
 
-type StatusCodeTypes = {
-	OK: 200;
-	CREATED: 201;
-	BAD_REQUEST: 400;
-	UNAUTHORIZED: 401;
-	NOT_FOUND: 404;
-	SERVER_ERROR: 500;
-};
+const statusCodes = Map({
+	OK: { status: 200, label: 'OK' },
+	CREATED: { status: 201, label: 'CREATED' },
+	BAD_REQUEST: { status: 400, label: 'BAD REQUEST' },
+	UNAUTHORIZED: { status: 401, label: 'UNAUTHORIZED' },
+	NOT_FOUND: { status: 404, label: 'NOT FOUND' },
+	SERVER_ERROR: { status: 500, label: 'SERVER ERROR' },
+});
 
-type StatusCodeKeys = keyof StatusCodeTypes;
-type StatusCodeValues = StatusCodeTypes[StatusCodeKeys];
-
-export { statusCodes, StatusCodeKeys, StatusCodeValues };
+export { statusCodes };

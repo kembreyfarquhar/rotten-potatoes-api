@@ -1,18 +1,10 @@
-enum HTTPMethods {
-	GET = 'get',
-	POST = 'post',
-	PUT = 'put',
-	DELETE = 'delete',
-}
+import { Map } from 'immutable';
 
-type HTTPMethodTypes = {
-	GET: 'get';
-	POST: 'post';
-	PUT: 'put';
-	DELETE: 'delete';
-};
+const HTTPMethods = Map({
+	GET: 'get',
+	POST: 'post',
+	PUT: 'put',
+	DELETE: 'delete',
+});
 
-type HTTPMethodKeys = keyof HTTPMethodTypes;
-type HTTPMethodValues = HTTPMethodTypes[HTTPMethodKeys];
-
-export { HTTPMethods, HTTPMethodKeys, HTTPMethodValues };
+export { HTTPMethods };

@@ -1,14 +1,10 @@
-import { LogTypeKeys } from '../../enums/logTypes';
-import { StatusCodeValues } from '../../enums/StatusCodes';
-import { HTTPMethodValues } from '../../enums/httpMethods';
-
 export type FormatParams = {
-	logType: LogTypeKeys;
+	logType: string;
 	info: any;
 	path: string;
-	method: HTTPMethodValues;
+	method: string;
 	host: string;
 	userAgent: string;
-	statusCode: StatusCodeValues;
+	statusCode: number;
 	log_data: any;
 };

@@ -1,8 +1,7 @@
-import { ControllerTypeValues } from './controllerTypes';
-import { HTTPMethodValues } from './httpMethods';
+import { ControllerTypeValues } from '../../enums/controllerTypes';
 
 type ServerRouteType = {
-	method: HTTPMethodValues;
+	method: string;
 	route: string;
 	controller: ControllerTypeValues;
 	action: string;

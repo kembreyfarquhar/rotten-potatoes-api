@@ -1,5 +1,4 @@
 import { RequestHandler } from 'express';
-import { HTTPMethodValues } from '../../enums/httpMethods';
 import { LoggerService } from '../../services/loggerService';
 import { getLoggerRoute } from '../../utils/getLoggerRoute';
 
@@ -9,7 +8,7 @@ const beginLoggingMW: RequestHandler = (req, _, next) => {
 	const logger = new LoggerService(
 		ROUTE,
 		req.originalUrl,
-		req.method as HTTPMethodValues,
+		req.method,
 		req.headers.host,
 		req.headers['user-agent']
 	);
