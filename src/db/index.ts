@@ -2,7 +2,7 @@ import { createConnection } from 'typeorm';
 import { SnakeNamingStrategy } from '../snakeNamingStrategy';
 // import { QueryLogger } from '../services/queryLogger';
 
-export let connect = async () => {
+export const connect = async () => {
 	const connection = await createConnection({
 		type: 'sqlite',
 		database: 'database.db',
